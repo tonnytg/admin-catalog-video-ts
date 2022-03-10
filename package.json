@@ -16,6 +16,7 @@
     "@swc/core": "^1.2.151",
     "@swc/jest": "^0.2.20",
     "@types/jest": "^27.4.1",
+    "@types/lodash": "^4.14.179",
     "@types/node": "^14.18.12",
     "@types/uuid": "^8.3.4",
     "jest": "^27.5.1",
