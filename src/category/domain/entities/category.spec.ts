@@ -1,6 +1,6 @@
 import {Category, CategoryProperties} from "./category";
 import { omit } from "lodash";
-import {validate as uuidValidate} from 'uuid';
+import UniqueEntityId from "../../../@seedwork/domain/unique-entity-id.vo";
 
 describe("Category Unit Test", () => {
 
@@ -88,42 +88,21 @@ describe("Category Unit Test", () => {
         expect(category.create_at).toBe(create_at);
     })
 
-    test("id field", () => {
-        let category = new Category({name: "Movie"})
-        expect(category.id).not.toBeNull();
-        expect(uuidValidate(category.id)).toBeTruthy();
-
-        category = new Category({name: "Movie"}, null)
-        expect(category.id).not.toBeNull();
-        expect(category.id).not.toBe(null);
-        expect(uuidValidate(category.id)).toBeTruthy();
-
-        category = new Category({name: "Movie"}, undefined)
-        expect(category.id).not.toBeNull();
-        expect(category.id).not.toBe(undefined)
-        expect(uuidValidate(category.id)).toBeTruthy();
-
-        category = new Category({name: "Movie"}, "57b06774-19c2-41f5-b8e3-1bf3f364b653")
-        expect(category.id).not.toBeNull();
-        expect(uuidValidate(category.id)).toBeTruthy();
-
-    })
-
     test("id field with array", () => {
 
-        type  CategoryData = {props: CategoryProperties, id?: string | undefined}
+        type  CategoryData = {props: CategoryProperties, id?: UniqueEntityId }
 
         const data: CategoryData[] = [
             {props: {name: "Movie"}},
             {props: {name: "Movie"}, id: null},
             {props: {name: "Movie"}, id: undefined},
-            {props: {name: "Movie"}, id: "57b06774-19c2-41f5-b8e3-1bf3f364b653"},
+            {props: {name: "Movie"}, id: new UniqueEntityId()},
         ]
 
         data.forEach(i => {
-            const category = new Category(i.props, i.id);
+            const category = new Category(i.props, i.id as any);
             expect(category.id).not.toBeNull();
-            expect(uuidValidate(category.id)).toBeTruthy();
+            expect(category.id).toBeInstanceOf(UniqueEntityId)
         });
 
     })
